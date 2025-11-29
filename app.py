@@ -24,11 +24,13 @@ USER_AVATAR = "/static/avatar/user.png"
 
 if GENAI_API_KEY:
     PROVIDER = "gemini"
+    MODEL = "gemini-2.5-pro"
     genai.configure(api_key=GENAI_API_KEY)
-    model = genai.GenerativeModel('gemini-2.5-pro', generation_config={"response_mime_type": "application/json"})
+    model = genai.GenerativeModel(MODEL, generation_config={"response_mime_type": "application/json"})
     BOT_AVATAR = "/static/avatar/gemini.png"
 elif OPENAI_API_KEY:
     PROVIDER = "openai"
+    MODEL = "gpt-5.1-codex"
     client = OpenAI(api_key=OPENAI_API_KEY)
     BOT_AVATAR = "/static/avatar/openai.png"
 
@@ -70,7 +72,7 @@ def generate_bot():
             text_response = response.text
         elif PROVIDER == "openai":
             response = client.chat.completions.create(
-                model="gpt-5", 
+                model=MODEL, 
                 messages=[
                     {"role": "system", "content": SYSTEM_INSTRUCTION},
                     {"role": "user", "content": user_prompt}
